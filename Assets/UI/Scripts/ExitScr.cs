@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class ExitScr : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Exit()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Application.Quit();
     }
 }
