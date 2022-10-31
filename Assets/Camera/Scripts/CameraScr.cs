@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class CameraScr : MonoBehaviour
 {
     [SerializeField] private Transform player;
@@ -12,6 +13,7 @@ public class CameraScr : MonoBehaviour
     private bool focusFlag = false;
     private float t = 1f;
     private int reloadCamera = 0;
+    private float cameraSpeedMultiplier = 1.3f;
 
     private void Awake()
     {
@@ -20,21 +22,15 @@ public class CameraScr : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-        {
-            reloadCamera++;
-            if(reloadCamera > 20)
-            {
-                reloadCamera = 0;
-                focusFlag = false;
-                t = 1f;
-            }
-        }
+        MoveChecker();
     }
 
     private void LateUpdate()
     {
         UpdateFocusPoint();
+
+        
+
         Vector3 lookDirection = transform.forward;
         transform.position = focusPoint - lookDirection * distance;
     }
@@ -43,23 +39,47 @@ public class CameraScr : MonoBehaviour
     {
         Vector3 targetPoint = player.position;
         float distance = Vector3.Distance(targetPoint, focusPoint);
-        
-        if (distance > focusRadius)
+
+        if (distance > focusRadius && !focusFlag)
         {
             focusFlag = true;
-            t = 1;
+            t = 1f;
         }
-        if (distance > 0.01f && !focusFlag)
+        if (distance > 0.05f && !focusFlag)
         {
             t = Mathf.Pow(1f - focusCentering, Time.unscaledDeltaTime);
             focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
         }
-        else
+        else if (focusFlag)
         {
-            t -= 0.006f;
-            focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);            
+            if (distance < 0.05f)
+            {
+                focusPoint = targetPoint;
+            }
+            else
+            {
+                t -= 0.00005f;
+                targetPoint = new Vector3(targetPoint.x, targetPoint.y, targetPoint.z * cameraSpeedMultiplier);
+                focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
+            }
         }
-        //focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
+
+
+       
+    }
+
+    private void MoveChecker()
+    {
+        if (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        {
+            reloadCamera++;
+            if (reloadCamera > 50)
+            {
+                reloadCamera = 0;
+                focusFlag = false;
+                t = 1f;
+            }
+        }
     }
 }
 

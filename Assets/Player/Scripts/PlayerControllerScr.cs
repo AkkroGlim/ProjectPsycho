@@ -11,11 +11,6 @@ public class PlayerControllerScr : MonoBehaviour
         playerRigid = GetComponent<Rigidbody>();
     }
 
-
-    void Update()
-    {
-
-    }
     private void FixedUpdate()
     {
         float horizontal = Input.GetAxis("Horizontal");
