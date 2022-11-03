@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerControllerScr : MonoBehaviour
 {
     private Rigidbody playerRigid;
-    private float speed = 700;
+    private float speed = 650;
     void Start()
     {
         playerRigid = GetComponent<Rigidbody>();

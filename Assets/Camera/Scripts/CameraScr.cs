@@ -14,10 +14,8 @@ public class CameraScr : MonoBehaviour
     private float t = 1f;
     private float cameraSpeedMultiplier = 0.8f;
     private delegate void MoveVariant();
-
-    
-
     MoveVariant moveVar;
+
     private void Awake()
     {
         focusPoint = player.position;
@@ -27,7 +25,11 @@ public class CameraScr : MonoBehaviour
 
     private void LateUpdate()
     {        
-        moveVar();
+        if(Time.timeScale > 0)
+        {
+            moveVar();
+        }
+        
 
         Vector3 lookDirection = transform.forward;
         transform.position = focusPoint - lookDirection * distance;
@@ -67,9 +69,7 @@ public class CameraScr : MonoBehaviour
                 }               
                 focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
             }
-        }
-
-        
+        }        
     }
 
     private void MoveCamera()
