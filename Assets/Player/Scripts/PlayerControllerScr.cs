@@ -5,9 +5,12 @@ using UnityEngine;
 public class PlayerControllerScr : MonoBehaviour
 {
     private Rigidbody playerRigid;
-    private float speed = 650;
+    private float speed;
+    private float walkSpeed = 5.6f;
+    private float runSpeed = 6.6f;
     void Start()
     {
+        speed = walkSpeed;
         playerRigid = GetComponent<Rigidbody>();
     }
 
@@ -19,8 +22,8 @@ public class PlayerControllerScr : MonoBehaviour
     private void PlayerControl()
     {
         float horizontal = Input.GetAxis("Horizontal");
-        playerRigid.AddForce(0f, 0f, horizontal * speed * Time.deltaTime, ForceMode.Acceleration);
-        if(horizontal != 0f)
+
+        if (horizontal != 0f)
         {
             PlayerEvent.moveEvent.Invoke(true);
         }
@@ -28,5 +31,17 @@ public class PlayerControllerScr : MonoBehaviour
         {
             PlayerEvent.moveEvent.Invoke(false);
         }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = runSpeed;
+        }
+        else
+        {
+            speed = walkSpeed;
+        }
+        playerRigid.AddRelativeForce(0f, 0f, horizontal * speed * Time.deltaTime, ForceMode.VelocityChange);
+        
+        
     }
 }
