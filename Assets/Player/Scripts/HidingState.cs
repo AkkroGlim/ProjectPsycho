@@ -11,7 +11,7 @@ public class HidingState : State
     public override void Enter()
     {
         base.Enter();
-        
+        player.Hiding();
     }
 
     public override void Exit()

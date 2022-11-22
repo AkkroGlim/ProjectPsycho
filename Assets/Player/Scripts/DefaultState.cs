@@ -14,7 +14,6 @@ public class DefaultState : State
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("hi");
     }
 
     public override void Exit()
@@ -31,9 +30,8 @@ public class DefaultState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (player.canHide && hiding)
-        {
-            Debug.Log("ﬂ œ–»“¿»À—ﬂ ’»’»’»’»’’»");
+        if (player.hidingPosition != null && hiding)
+        {           
             stateMachine.ChangeState(player.hidingState);
         }
     }

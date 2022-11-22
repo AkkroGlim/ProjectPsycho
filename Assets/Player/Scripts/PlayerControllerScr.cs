@@ -9,9 +9,10 @@ public class PlayerControllerScr : MonoBehaviour
     private float walkSpeed = 5.6f;
     private float runSpeed = 6.6f;
     private StateMachine moveSM;
+    public Transform hidingPosition;
     public DefaultState defaultState;
     public HidingState hidingState;
-    public bool canHide = false;
+
 
     void Start()
     {
@@ -28,7 +29,7 @@ public class PlayerControllerScr : MonoBehaviour
     private void Update()
     {
         moveSM.currentState.HandleInput();
-        moveSM.currentState.LogicUpdate();       
+        moveSM.currentState.LogicUpdate();
     }
 
     private void FixedUpdate()
@@ -62,9 +63,15 @@ public class PlayerControllerScr : MonoBehaviour
 
     }
 
-    private void HidingControl(bool canHide)
+    private void HidingControl(Transform hidingPosition)
     {
-        this.canHide = canHide;
+        this.hidingPosition = hidingPosition;
+    }
+
+    public void Hiding()
+    {
+        transform.position = hidingPosition.position;
+        transform.localScale = new Vector3(transform.localScale.x , hidingPosition.localScale.y , transform.localScale.z);
     }
 
 }
