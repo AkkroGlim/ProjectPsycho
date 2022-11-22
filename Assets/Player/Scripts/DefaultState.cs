@@ -30,7 +30,7 @@ public class DefaultState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (player.hidingPosition != null && hiding)
+        if (player.hidingChecker() != Vector3.zero && hiding)
         {           
             stateMachine.ChangeState(player.hidingState);
         }
@@ -39,7 +39,10 @@ public class DefaultState : State
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        player.PlayerControl();
+        if (player.UnHiding())
+        {
+            player.PlayerControl();
+        }       
     }
 
     

@@ -45,6 +45,7 @@ public class CameraScr : MonoBehaviour
             focusFlag = true;
             t = 1f;
         }
+
         if (distance > 0.05f && !focusFlag)
         {
             t = Mathf.Pow(1f - focusCentering, Time.unscaledDeltaTime);

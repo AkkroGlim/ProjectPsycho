@@ -3,5 +3,5 @@ using UnityEngine.Events;
 
 public class TriggerEvent : MonoBehaviour
 {
-    public static UnityEvent<Transform> triggerEvent = new UnityEvent<Transform>();
+    public static UnityEvent<Vector3, Vector3> triggerEvent = new UnityEvent<Vector3, Vector3>();
 }
