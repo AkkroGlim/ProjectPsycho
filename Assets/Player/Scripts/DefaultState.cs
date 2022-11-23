@@ -5,6 +5,7 @@ using UnityEngine;
 public class DefaultState : State
 {
     private bool hiding;
+    private bool isHideOver;
 
 
     public DefaultState(PlayerControllerScr player, StateMachine stateMachine) : base(player, stateMachine)
@@ -31,15 +32,22 @@ public class DefaultState : State
     {
         base.LogicUpdate();
         if (player.hidingChecker() != Vector3.zero && hiding)
-        {           
+        {
             stateMachine.ChangeState(player.hidingState);
+        }
+
+        isHideOver = player.isHideOver();
+
+        if (!isHideOver)
+        {
+            player.HideMove();
         }
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        if (player.UnHiding())
+        if (isHideOver)
         {
             player.PlayerControl();
         }       

@@ -20,7 +20,7 @@ public abstract class State
 
     public virtual void Exit()
     {
-
+        player.HideMoveFlag();
     }
 
     public virtual void HandleInput()

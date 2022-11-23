@@ -11,8 +11,9 @@ public class PlayerControllerScr : MonoBehaviour
     private StateMachine moveSM;
     private Vector3 hidingPosition;
     private Vector3 hidingScale;
-    private float playerPositionX;
-    private bool unHideFlag = false;
+    private float defaultPlayerPositionX;
+    private Vector3 defaultPlayerScale;
+    private bool hideFlag;
     public DefaultState defaultState;
     public HidingState hidingState;
 
@@ -22,6 +23,8 @@ public class PlayerControllerScr : MonoBehaviour
         speed = walkSpeed;
         playerRigid = GetComponent<Rigidbody>();
         TriggerEvent.triggerEvent.AddListener(HidingControl);
+        defaultPlayerPositionX = transform.position.x;
+        defaultPlayerScale = transform.localScale;
         moveSM = new StateMachine();
         defaultState = new DefaultState(this, moveSM);
         hidingState = new HidingState(this, moveSM);
@@ -72,37 +75,46 @@ public class PlayerControllerScr : MonoBehaviour
         this.hidingScale = hidingScale;
     }
 
-    public void Hiding()
+    public void HideMove()
     {
-        float distance = Vector3.Distance(transform.position, hidingPosition);
+        Vector3 targetPoint;
+        if (!hideFlag)
+        {
+            targetPoint = new Vector3(defaultPlayerPositionX, transform.position.y, transform.position.z);
+            transform.localScale = defaultPlayerScale;
+        }
+        else
+        {
+            targetPoint = hidingPosition;
+            if(hidingScale.y < 2f)
+            {
+                transform.localScale = new Vector3(1f, 0.5f, 1f);
+            }
+        }
+
+        float distance = Vector3.Distance(transform.position, targetPoint);
+
         if (distance < 0.03f)
         {
-            transform.position = hidingPosition;
+            transform.position = targetPoint;
         }
         else
         {
             float t = Mathf.Pow(0.1f, Time.unscaledDeltaTime);
-            transform.position = Vector3.Lerp(hidingPosition, transform.position, t);
+            transform.position = Vector3.Lerp(targetPoint, transform.position, t);
         }
     }
 
-    public bool UnHiding()
+    public bool isHideOver()
     {
-        Vector3 targetPoint = new Vector3(playerPositionX, transform.position.y, transform.position.z);
-        float distance = Vector3.Distance(transform.position, targetPoint);
-
-        if (distance < 0.03f && unHideFlag)
+        if(transform.position.x == defaultPlayerPositionX && transform.localScale == defaultPlayerScale)
         {
-            transform.position = targetPoint;
-            unHideFlag = false;
+            return true;
         }
-        else if (distance > 0.03f && unHideFlag)
+        else
         {
-            float t = Mathf.Pow(0.1f, Time.unscaledDeltaTime);
-            transform.position = Vector3.Lerp(targetPoint, transform.position, t);
             return false;
         }
-        return true;
     }
 
     public Vector3 hidingChecker()
@@ -110,9 +122,8 @@ public class PlayerControllerScr : MonoBehaviour
         return hidingScale;
     }
 
-    public void SavePlayerPositionX()
+    public void HideMoveFlag()
     {
-        playerPositionX = transform.position.x;
-        unHideFlag = true;
+        hideFlag = !hideFlag;
     }
 }

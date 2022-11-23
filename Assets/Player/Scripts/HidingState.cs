@@ -11,12 +11,13 @@ public class HidingState : State
     public override void Enter()
     {
         base.Enter();
-        player.SavePlayerPositionX();
+        HidingHint.HintToggle();
     }
 
     public override void Exit()
     {
         base.Exit();
+        HidingHint.HintToggle();
     }
 
     public override void HandleInput()
@@ -32,7 +33,7 @@ public class HidingState : State
         {
             stateMachine.ChangeState(player.defaultState);
         }
-        player.Hiding();
+        player.HideMove();
     }
 
     public override void PhysicsUpdate()

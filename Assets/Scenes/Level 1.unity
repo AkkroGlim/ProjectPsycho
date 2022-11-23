@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1974748}
   - component: {fileID: 1974749}
+  - component: {fileID: 1974750}
   m_Layer: 3
   m_Name: ShelterTrigger
   m_TagString: Untagged
@@ -169,6 +170,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 0.10985947}
   m_Center: {x: 0, y: 0, z: -0.44507027}
+--- !u!114 &1974750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0acd1a0cec2a6a44d8bafc9964f3029e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shelter: {fileID: 1180952512}
 --- !u!1 &9764490
 GameObject:
   m_ObjectHideFlags: 0
@@ -1189,6 +1203,7 @@ GameObject:
   - component: {fileID: 1717858586}
   - component: {fileID: 1717858585}
   - component: {fileID: 1717858584}
+  - component: {fileID: 1717858588}
   m_Layer: 5
   m_Name: HintsCanvas
   m_TagString: Untagged
@@ -1278,6 +1293,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1717858588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717858583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b74c298fc16f446898ccd02ca7fe31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hint: {fileID: 242027500}
 --- !u!1 &1760197335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,7 +1366,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shelter: {fileID: 1634251771}
-  hint: {fileID: 242027500}
 --- !u!1 &1895246901
 GameObject:
   m_ObjectHideFlags: 0
