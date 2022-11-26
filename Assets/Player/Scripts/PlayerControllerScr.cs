@@ -1,13 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControllerScr : MonoBehaviour
 {
     private Rigidbody playerRigid;
-    private float speed;
-    private float walkSpeed = 5.6f;
-    private float runSpeed = 6.6f;
     private StateMachine moveSM;
     private Vector3 hidingPosition;
     private Vector3 hidingScale;
@@ -20,7 +15,6 @@ public class PlayerControllerScr : MonoBehaviour
 
     void Start()
     {
-        speed = walkSpeed;
         playerRigid = GetComponent<Rigidbody>();
         TriggerEvent.triggerEvent.AddListener(HidingControl);
         defaultPlayerPositionX = transform.position.x;
@@ -43,32 +37,6 @@ public class PlayerControllerScr : MonoBehaviour
         moveSM.currentState.PhysicsUpdate();
     }
 
-    public void PlayerControl()
-    {
-        float horizontal = Input.GetAxis("Horizontal");
-
-        if (horizontal != 0f)
-        {
-            PlayerEvent.moveEvent.Invoke(true);
-        }
-        else
-        {
-            PlayerEvent.moveEvent.Invoke(false);
-        }
-
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            speed = runSpeed;
-        }
-        else
-        {
-            speed = walkSpeed;
-        }
-        playerRigid.AddRelativeForce(0f, 0f, horizontal * speed * Time.deltaTime, ForceMode.VelocityChange);
-
-
-    }
-
     private void HidingControl(Vector3 hidingPosition, Vector3 hidingScale)
     {
         this.hidingPosition = new Vector3(hidingPosition.x, transform.position.y, hidingPosition.z);
@@ -86,7 +54,7 @@ public class PlayerControllerScr : MonoBehaviour
         else
         {
             targetPoint = hidingPosition;
-            if(hidingScale.y < 2f)
+            if (hidingScale.y < 2f)
             {
                 transform.localScale = new Vector3(1f, 0.5f, 1f);
             }
@@ -107,7 +75,7 @@ public class PlayerControllerScr : MonoBehaviour
 
     public bool isHideOver()
     {
-        if(transform.position.x == defaultPlayerPositionX && transform.localScale == defaultPlayerScale)
+        if (transform.position.x == defaultPlayerPositionX && transform.localScale == defaultPlayerScale)
         {
             return true;
         }
@@ -125,5 +93,21 @@ public class PlayerControllerScr : MonoBehaviour
     public void HideMoveFlag()
     {
         hideFlag = !hideFlag;
+    }
+
+    public void Move(float speed)
+    {
+        Vector3 targetVelocity = speed * transform.forward * Time.deltaTime;
+        targetVelocity.y = playerRigid.velocity.y;
+        playerRigid.velocity = targetVelocity;
+
+        if (speed != 0f)
+        {
+            PlayerEvent.moveEvent.Invoke(true);
+        }
+        else
+        {
+            PlayerEvent.moveEvent.Invoke(false);
+        }
     }
 }

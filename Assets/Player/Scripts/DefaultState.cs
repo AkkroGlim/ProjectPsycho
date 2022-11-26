@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DefaultState : State
 {
     private bool hiding;
     private bool isHideOver;
-
+    private float speed = 70f;
+    private float horizontalInput;
+    private float walkSpeed = 70f;
+    private float runSpeed = 100f;
 
     public DefaultState(PlayerControllerScr player, StateMachine stateMachine) : base(player, stateMachine)
     {
@@ -20,12 +21,14 @@ public class DefaultState : State
     public override void Exit()
     {
         base.Exit();
+        horizontalInput = 0f;
     }
 
     public override void HandleInput()
     {
         base.HandleInput();
         hiding = Input.GetKeyDown(KeyCode.E);
+        horizontalInput = Input.GetAxis("Horizontal");
     }
 
     public override void LogicUpdate()
@@ -42,6 +45,15 @@ public class DefaultState : State
         {
             player.HideMove();
         }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = runSpeed;
+        }
+        else
+        {
+            speed = walkSpeed;
+        }
     }
 
     public override void PhysicsUpdate()
@@ -49,7 +61,7 @@ public class DefaultState : State
         base.PhysicsUpdate();
         if (isHideOver)
         {
-            player.PlayerControl();
+            player.Move(horizontalInput * speed);
         }       
     }
 
