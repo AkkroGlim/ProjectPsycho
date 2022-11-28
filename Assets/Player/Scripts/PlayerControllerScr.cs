@@ -49,15 +49,10 @@ public class PlayerControllerScr : MonoBehaviour
         if (!hideFlag)
         {
             targetPoint = new Vector3(defaultPlayerPositionX, transform.position.y, transform.position.z);
-            transform.localScale = defaultPlayerScale;
         }
         else
         {
             targetPoint = hidingPosition;
-            if (hidingScale.y < 2f)
-            {
-                transform.localScale = new Vector3(1f, 0.5f, 1f);
-            }
         }
 
         float distance = Vector3.Distance(transform.position, targetPoint);
