@@ -6,6 +6,9 @@ public abstract class EnemyState
 {
     protected Enemy enemy;
     protected EnemyStateMachine sm;
+    protected float attackDistance = 2f;
+    protected float manhuntDistance = 5f;
+    protected Transform playerTransform;
 
     protected EnemyState(Enemy enemy, EnemyStateMachine sm)
     {
@@ -13,7 +16,9 @@ public abstract class EnemyState
         this.sm = sm;
     }
 
-    public virtual void Enter() { }
+    public virtual void Enter() {
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+    }
 
     public virtual void Exit() { }
 
