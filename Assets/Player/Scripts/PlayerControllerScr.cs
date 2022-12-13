@@ -14,9 +14,11 @@ public class PlayerControllerScr : MonoBehaviour
     private float speed = 70f;
     private float walkSpeed = 70f;
     private float runSpeed = 140f;
+    private float targetRotate;
 
     public DefaultState defaultState;
     public HidingState hidingState;
+    public TurnState turnState;
 
 
     void Start()
@@ -25,9 +27,13 @@ public class PlayerControllerScr : MonoBehaviour
         TriggerEvent.triggerEvent.AddListener(HidingControl);
         defaultPlayerPositionX = transform.position.x;
         defaultPlayerScale = transform.localScale;
+        targetRotate = transform.rotation.y;
+
         moveSM = new StateMachine();
         defaultState = new DefaultState(this, moveSM);
-        hidingState = new HidingState(this, moveSM);        
+        hidingState = new HidingState(this, moveSM);
+        turnState = new TurnState(this, moveSM);
+
         moveSM.Initialize(defaultState);
     }
 
@@ -95,21 +101,21 @@ public class PlayerControllerScr : MonoBehaviour
         hideFlag = !hideFlag;
     }
 
-    public void Move(float direction, float turnDirection)
+    public void Move(float moveDirection, float faceDirection)
     {
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            speed = runSpeed * direction;
-            direction = direction * 2;
+            speed = runSpeed * moveDirection;
+            moveDirection = moveDirection * 2;
         }
         else
         {
-            speed = walkSpeed * direction;
+            speed = walkSpeed * moveDirection;
         }
 
-        playerAnimator.SetFloat("Move", direction);
+        playerAnimator.SetFloat("Move", moveDirection);        
 
-        Vector3 targetVelocity = speed * transform.forward * Time.deltaTime;
+        Vector3 targetVelocity = speed * transform.forward * Time.deltaTime * faceDirection;
         targetVelocity.y = playerRigid.velocity.y;
         playerRigid.velocity = targetVelocity;
 
@@ -121,5 +127,15 @@ public class PlayerControllerScr : MonoBehaviour
         {
             PlayerEvent.moveEvent.Invoke(false);
         }
+    }
+
+    public void Turn(float direction)
+    {                         
+        targetRotate = transform.rotation.y + 180 * direction;       
+
+        if(targetRotate != transform.rotation.y)
+        {
+            transform.Rotate(0f, direction * 2, 0f);
+        }      
     }
 }
