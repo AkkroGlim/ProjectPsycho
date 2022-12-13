@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerControllerScr : MonoBehaviour
 {
+    [SerializeField] private Animator playerAnimator;
+
     private Rigidbody playerRigid;
     private StateMachine moveSM;
     private Vector3 hidingPosition;
@@ -9,6 +11,10 @@ public class PlayerControllerScr : MonoBehaviour
     private float defaultPlayerPositionX;
     private Vector3 defaultPlayerScale;
     private bool hideFlag;
+    private float speed = 70f;
+    private float walkSpeed = 70f;
+    private float runSpeed = 140f;
+
     public DefaultState defaultState;
     public HidingState hidingState;
 
@@ -21,8 +27,7 @@ public class PlayerControllerScr : MonoBehaviour
         defaultPlayerScale = transform.localScale;
         moveSM = new StateMachine();
         defaultState = new DefaultState(this, moveSM);
-        hidingState = new HidingState(this, moveSM);
-
+        hidingState = new HidingState(this, moveSM);        
         moveSM.Initialize(defaultState);
     }
 
@@ -90,13 +95,25 @@ public class PlayerControllerScr : MonoBehaviour
         hideFlag = !hideFlag;
     }
 
-    public void Move(float speed)
+    public void Move(float direction, float turnDirection)
     {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = runSpeed * direction;
+            direction = direction * 2;
+        }
+        else
+        {
+            speed = walkSpeed * direction;
+        }
+
+        playerAnimator.SetFloat("Move", direction);
+
         Vector3 targetVelocity = speed * transform.forward * Time.deltaTime;
         targetVelocity.y = playerRigid.velocity.y;
         playerRigid.velocity = targetVelocity;
 
-        if (speed != 0f)
+        if (speed != 0)
         {
             PlayerEvent.moveEvent.Invoke(true);
         }

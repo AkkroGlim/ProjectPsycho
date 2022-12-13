@@ -30,7 +30,7 @@ public class CameraScr : MonoBehaviour
         
 
         Vector3 lookDirection = transform.forward;
-        transform.position = focusPoint - lookDirection * distance;
+        transform.position = focusPoint - lookDirection * distance + Vector3.up;
     }
 
     private void SmartMoveCamera()
