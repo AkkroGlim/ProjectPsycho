@@ -35,7 +35,7 @@ public class DefaultState : State
         base.LogicUpdate();
         
 
-        if (player.isPlayerTurnAround())
+        if (player.IsPlayerTurnAround())
         {
             stateMachine.ChangeState(player.turnState);
         }

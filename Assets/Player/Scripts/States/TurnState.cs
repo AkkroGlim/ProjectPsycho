@@ -14,7 +14,8 @@ public class TurnState : State
     {
         base.Enter();
         direction = Mathf.Sign(Input.mousePosition.x - Screen.width / 2);
-        targetAngle = player.transform.localEulerAngles + new Vector3(0f, -180f , 0f) * direction;  //Mathf.Sign(Input.mousePosition.x - Screen.width / 2)
+        targetAngle = player.transform.localEulerAngles + new Vector3(0f, -180f, 0f) * direction; 
+        targetAngle.y = Mathf.Round(targetAngle.y);
         player.ActiveTurnAnimation();
     }
 
@@ -26,8 +27,9 @@ public class TurnState : State
     public override void HandleInput()
     {
         base.HandleInput();
-        if (player.transform.eulerAngles == targetAngle)
+        if (Vector3.Distance(player.transform.localEulerAngles, targetAngle) < 10)
         {
+            player.transform.localEulerAngles = targetAngle;
             stateMachine.ChangeState(player.defaultState);
         }
     }
@@ -37,12 +39,10 @@ public class TurnState : State
         base.LogicUpdate();
 
         player.Turn(direction);
-
     }
 
     public override void PhysicsUpdate()
     {
-        base.PhysicsUpdate();
-        
+        base.PhysicsUpdate();       
     }
 }

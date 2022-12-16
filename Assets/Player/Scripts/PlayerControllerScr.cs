@@ -12,11 +12,11 @@ public class PlayerControllerScr : MonoBehaviour
     private bool hideFlag;
     private float speed = 70f;
     private float walkSpeed = 70f;
-    private float runSpeed = 140f;
+    private float speedMultiplier = 1;
 
     private float mousePositionX;
     private float newMousePositionX;
-    
+
     public DefaultState defaultState;
     public HidingState hidingState;
     public TurnState turnState;
@@ -41,7 +41,6 @@ public class PlayerControllerScr : MonoBehaviour
 
     private void Update()
     {
-        
         moveSM.currentState.HandleInput();
         moveSM.currentState.LogicUpdate();
     }
@@ -106,16 +105,17 @@ public class PlayerControllerScr : MonoBehaviour
 
     public void Move(float moveDirection, float faceDirection)
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && moveDirection == faceDirection)
         {
-            speed = runSpeed * moveDirection;
-            moveDirection = moveDirection * 2;
+            speedMultiplier = Mathf.Clamp(speedMultiplier + 0.04f, 1f, 2f);
         }
         else
         {
-            speed = walkSpeed * moveDirection;
+            speedMultiplier = Mathf.Clamp(speedMultiplier - 0.04f, 1f, 2f);
         }
 
+        speed = walkSpeed * moveDirection * speedMultiplier;
+        moveDirection = moveDirection * speedMultiplier;
         playerAnimator.SetFloat("Move", moveDirection);
 
         Vector3 targetVelocity = speed * transform.forward * Time.deltaTime * faceDirection;
@@ -137,7 +137,7 @@ public class PlayerControllerScr : MonoBehaviour
         transform.Rotate(0f, -500 * direction * Time.deltaTime, 0f);
     }
 
-    public bool isPlayerTurnAround()
+    public bool IsPlayerTurnAround()
     {
         newMousePositionX = Mathf.Sign(Input.mousePosition.x - Screen.width / 2);
         if (mousePositionX != newMousePositionX)

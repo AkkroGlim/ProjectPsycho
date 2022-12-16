@@ -4,9 +4,7 @@ public class HidingState : State
 {   
     private bool unhiding;
 
-    public HidingState(PlayerControllerScr player, StateMachine stateMachine) : base(player, stateMachine)
-    {
-    }
+    public HidingState(PlayerControllerScr player, StateMachine stateMachine) : base(player, stateMachine) { }
 
     public override void Enter()
     {
