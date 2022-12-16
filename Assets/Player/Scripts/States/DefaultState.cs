@@ -6,8 +6,6 @@ public class DefaultState : State
     private bool isHideOver;
     private float horizontalInput;
 
-    private float mousePositionX;
-    private float newMousePositionX;
 
     public DefaultState(PlayerControllerScr player, StateMachine stateMachine) : base(player, stateMachine) { }
 
@@ -15,13 +13,14 @@ public class DefaultState : State
     public override void Enter()
     {
         base.Enter();
-        mousePositionX = newMousePositionX = Mathf.Sign(Input.mousePosition.x - Screen.width / 2);
+        Debug.Log("куку");
     }
 
     public override void Exit()
     {
         base.Exit();
         horizontalInput = 0f;
+        player.HideMoveFlag();
     }
 
     public override void HandleInput()
@@ -34,9 +33,9 @@ public class DefaultState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        newMousePositionX = Mathf.Sign(Input.mousePosition.x - Screen.width / 2);
+        
 
-        if(newMousePositionX != mousePositionX)
+        if (player.isPlayerTurnAround())
         {
             stateMachine.ChangeState(player.turnState);
         }
@@ -52,8 +51,6 @@ public class DefaultState : State
         {
             player.HideMove();
         }
-
-        player.Turn(Mathf.Sign(Input.mousePosition.x - Screen.width / 2));
     }
 
     public override void PhysicsUpdate()

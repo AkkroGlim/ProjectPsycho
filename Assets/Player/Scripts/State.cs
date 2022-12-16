@@ -10,28 +10,13 @@ public abstract class State
         this.stateMachine = stateMachine;
     }
 
-    public virtual void Enter()
-    {
+    public virtual void Enter() { }
 
-    }
+    public virtual void Exit() { }
 
-    public virtual void Exit()
-    {
-        player.HideMoveFlag();
-    }
+    public virtual void HandleInput() { }
 
-    public virtual void HandleInput()
-    {
+    public virtual void LogicUpdate() { }
 
-    }
-
-    public virtual void LogicUpdate()
-    {
-
-    }
-
-    public virtual void PhysicsUpdate()
-    {
-
-    }
+    public virtual void PhysicsUpdate() { }
 }

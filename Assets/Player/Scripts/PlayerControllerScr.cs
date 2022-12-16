@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class PlayerControllerScr : MonoBehaviour
 {
-    [SerializeField] private Animator playerAnimator;
-
+    private Animator playerAnimator;
     private Rigidbody playerRigid;
     private StateMachine moveSM;
     private Vector3 hidingPosition;
@@ -14,8 +13,10 @@ public class PlayerControllerScr : MonoBehaviour
     private float speed = 70f;
     private float walkSpeed = 70f;
     private float runSpeed = 140f;
-    private float targetRotate;
 
+    private float mousePositionX;
+    private float newMousePositionX;
+    
     public DefaultState defaultState;
     public HidingState hidingState;
     public TurnState turnState;
@@ -24,10 +25,11 @@ public class PlayerControllerScr : MonoBehaviour
     void Start()
     {
         playerRigid = GetComponent<Rigidbody>();
+        playerAnimator = GetComponent<Animator>();
         TriggerEvent.triggerEvent.AddListener(HidingControl);
         defaultPlayerPositionX = transform.position.x;
         defaultPlayerScale = transform.localScale;
-        targetRotate = transform.rotation.y;
+        mousePositionX = newMousePositionX = Mathf.Sign(Input.mousePosition.x - Screen.width / 2);
 
         moveSM = new StateMachine();
         defaultState = new DefaultState(this, moveSM);
@@ -39,6 +41,7 @@ public class PlayerControllerScr : MonoBehaviour
 
     private void Update()
     {
+        
         moveSM.currentState.HandleInput();
         moveSM.currentState.LogicUpdate();
     }
@@ -113,7 +116,7 @@ public class PlayerControllerScr : MonoBehaviour
             speed = walkSpeed * moveDirection;
         }
 
-        playerAnimator.SetFloat("Move", moveDirection);        
+        playerAnimator.SetFloat("Move", moveDirection);
 
         Vector3 targetVelocity = speed * transform.forward * Time.deltaTime * faceDirection;
         targetVelocity.y = playerRigid.velocity.y;
@@ -130,12 +133,23 @@ public class PlayerControllerScr : MonoBehaviour
     }
 
     public void Turn(float direction)
-    {                         
-        targetRotate = transform.rotation.y + 180 * direction;       
+    {
+        transform.Rotate(0f, -500 * direction * Time.deltaTime, 0f);
+    }
 
-        if(targetRotate != transform.rotation.y)
+    public bool isPlayerTurnAround()
+    {
+        newMousePositionX = Mathf.Sign(Input.mousePosition.x - Screen.width / 2);
+        if (mousePositionX != newMousePositionX)
         {
-            transform.Rotate(0f, direction * 2, 0f);
-        }      
+            mousePositionX = newMousePositionX;
+            return true;
+        }
+        return false;
+    }
+
+    public void ActiveTurnAnimation()
+    {
+        playerAnimator.SetTrigger("Direction");
     }
 }

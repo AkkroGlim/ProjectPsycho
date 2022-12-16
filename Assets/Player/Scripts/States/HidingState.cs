@@ -18,6 +18,7 @@ public class HidingState : State
     {
         base.Exit();
         HidingHint.HintToggle();
+        player.HideMoveFlag();
     }
 
     public override void HandleInput()
