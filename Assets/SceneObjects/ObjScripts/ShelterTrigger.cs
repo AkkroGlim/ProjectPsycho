@@ -23,8 +23,7 @@ public class ShelterTrigger : MonoBehaviour
         if (other.gameObject.tag.Equals("Player"))
         {
             Vector3 hidingPosition = shelter.position - distance;
-            Vector3 hidingScale = shelter.localScale;
-            TriggerEvent.triggerEvent.Invoke(hidingPosition, hidingScale);
+            TriggerEvent.triggerEvent.Invoke(hidingPosition);
             HidingHint.HintToggle();
         }
         
@@ -34,7 +33,7 @@ public class ShelterTrigger : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("Player"))
         {
-            TriggerEvent.triggerEvent.Invoke(Vector3.zero, Vector3.zero);
+            TriggerEvent.triggerEvent.Invoke(Vector3.zero);
             HidingHint.HintToggle();
         }
         

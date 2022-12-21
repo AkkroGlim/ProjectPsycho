@@ -5,11 +5,12 @@ public class PlayerControllerScr : MonoBehaviour
     private Animator playerAnimator;
     private Rigidbody playerRigid;
     private StateMachine moveSM;
-    private Vector3 hidingPosition;
-    private Vector3 hidingScale;
+
     private float defaultPlayerPositionX;
-    private Vector3 defaultPlayerScale;
-    private bool hideFlag;
+
+    public bool mayHide = false;
+    private Vector3 shelterPosition;
+
     private float speed = 70f;
     private float walkSpeed = 70f;
     private float speedMultiplier = 1;
@@ -26,10 +27,12 @@ public class PlayerControllerScr : MonoBehaviour
     {
         playerRigid = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
-        TriggerEvent.triggerEvent.AddListener(HidingControl);
+        TriggerEvent.triggerEvent.AddListener(HideZone);
         defaultPlayerPositionX = transform.position.x;
-        defaultPlayerScale = transform.localScale;
-        mousePositionX = newMousePositionX = Mathf.Sign(Input.mousePosition.x - Screen.width / 2);
+
+
+        mousePositionX = 1f;
+        newMousePositionX = Mathf.Sign(Input.mousePosition.x - Screen.width / 2);
 
         moveSM = new StateMachine();
         defaultState = new DefaultState(this, moveSM);
@@ -50,57 +53,14 @@ public class PlayerControllerScr : MonoBehaviour
         moveSM.currentState.PhysicsUpdate();
     }
 
-    private void HidingControl(Vector3 hidingPosition, Vector3 hidingScale)
+    public void Centring()
     {
-        this.hidingPosition = new Vector3(hidingPosition.x, transform.position.y, hidingPosition.z);
-        this.hidingScale = hidingScale;
-    }
-
-    public void HideMove()
-    {
-        Vector3 targetPoint;
-        if (!hideFlag)
+        if(defaultPlayerPositionX != transform.position.x)
         {
-            targetPoint = new Vector3(defaultPlayerPositionX, transform.position.y, transform.position.z);
+            Vector3 target = transform.position;
+            target.x = defaultPlayerPositionX;
+            transform.position = Vector3.MoveTowards(transform.position, target, 3 * Time.deltaTime);
         }
-        else
-        {
-            targetPoint = hidingPosition;
-        }
-
-        float distance = Vector3.Distance(transform.position, targetPoint);
-
-        if (distance < 0.03f)
-        {
-            transform.position = targetPoint;
-        }
-        else
-        {
-            float t = Mathf.Pow(0.1f, Time.unscaledDeltaTime);
-            transform.position = Vector3.Lerp(targetPoint, transform.position, t);
-        }
-    }
-
-    public bool isHideOver()
-    {
-        if (transform.position.x == defaultPlayerPositionX && transform.localScale == defaultPlayerScale)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public Vector3 hidingChecker()
-    {
-        return hidingScale;
-    }
-
-    public void HideMoveFlag()
-    {
-        hideFlag = !hideFlag;
     }
 
     public void Move(float moveDirection, float faceDirection)
@@ -143,13 +103,27 @@ public class PlayerControllerScr : MonoBehaviour
         if (mousePositionX != newMousePositionX)
         {
             mousePositionX = newMousePositionX;
+
             return true;
         }
+        playerAnimator.SetFloat("Direction", mousePositionX);
         return false;
     }
 
     public void ActiveTurnAnimation()
     {
-        playerAnimator.SetTrigger("Direction");
+        playerAnimator.SetTrigger("Turn");
+    }
+
+    public void Hiding()
+    {
+        shelterPosition.y = transform.position.y;
+        transform.position = Vector3.MoveTowards(transform.position, shelterPosition, 3 * Time.deltaTime);
+    }
+
+    private void HideZone(Vector3 shelterPosition)
+    {
+        this.shelterPosition = shelterPosition;
+        mayHide = !mayHide;
     }
 }

@@ -16,7 +16,6 @@ public class HidingState : State
     {
         base.Exit();
         HidingHint.HintToggle();
-        player.HideMoveFlag();
     }
 
     public override void HandleInput()
@@ -32,7 +31,7 @@ public class HidingState : State
         {
             stateMachine.ChangeState(player.defaultState);
         }
-        player.HideMove();
+        player.Hiding();
     }
 
     public override void PhysicsUpdate()

@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class DefaultState : State
 {
-    private bool hiding;
-    private bool isHideOver;
     private float horizontalInput;
-
+    private bool hiding;
 
     public DefaultState(PlayerControllerScr player, StateMachine stateMachine) : base(player, stateMachine) { }
 
@@ -13,14 +11,12 @@ public class DefaultState : State
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("куку");
     }
 
     public override void Exit()
     {
         base.Exit();
         horizontalInput = 0f;
-        player.HideMoveFlag();
     }
 
     public override void HandleInput()
@@ -33,32 +29,22 @@ public class DefaultState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        
+        player.Centring();
 
         if (player.IsPlayerTurnAround())
         {
             stateMachine.ChangeState(player.turnState);
         }
 
-        if (player.hidingChecker() != Vector3.zero && hiding)
+        if (player.mayHide && Input.GetKeyDown(KeyCode.E))
         {
             stateMachine.ChangeState(player.hidingState);
-        }
-
-        isHideOver = player.isHideOver();
-
-        if (!isHideOver)
-        {
-            player.HideMove();
         }
     }
 
     public override void PhysicsUpdate()
     {
-        base.PhysicsUpdate();
-        if (isHideOver)
-        {
-            player.Move(horizontalInput , Mathf.Sign(Input.mousePosition.x - Screen.width / 2));           
-        }
+        base.PhysicsUpdate();       
+        player.Move(horizontalInput , Mathf.Sign(Input.mousePosition.x - Screen.width / 2));                   
     }  
 }

@@ -36,13 +36,12 @@ public class TurnState : State
 
     public override void LogicUpdate()
     {
-        base.LogicUpdate();
-
-        player.Turn(direction);
+        base.LogicUpdate();      
     }
 
     public override void PhysicsUpdate()
     {
-        base.PhysicsUpdate();       
+        base.PhysicsUpdate();
+        player.Turn(direction);
     }
 }
