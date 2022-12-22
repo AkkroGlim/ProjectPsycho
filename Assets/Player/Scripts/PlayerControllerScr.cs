@@ -7,8 +7,8 @@ public class PlayerControllerScr : MonoBehaviour
     private StateMachine moveSM;
 
     private float defaultPlayerPositionX;
-
-    public bool mayHide = false;
+    public bool mayVault;
+    public bool mayHide;
     private Vector3 shelterPosition;
 
     private float speed = 70f;
@@ -21,23 +21,25 @@ public class PlayerControllerScr : MonoBehaviour
     public DefaultState defaultState;
     public HidingState hidingState;
     public TurnState turnState;
-
+    public VaultState vaultState;
 
     void Start()
     {
         playerRigid = GetComponent<Rigidbody>();
         playerAnimator = GetComponent<Animator>();
-        TriggerEvent.triggerEvent.AddListener(HideZone);
+        TriggerEvent.triggerEvent.AddListener(InteractZone);
         defaultPlayerPositionX = transform.position.x;
-
+        mayHide = false;
 
         mousePositionX = 1f;
         newMousePositionX = Mathf.Sign(Input.mousePosition.x - Screen.width / 2);
+        playerAnimator.SetFloat("DirectionFloat", newMousePositionX);
 
         moveSM = new StateMachine();
         defaultState = new DefaultState(this, moveSM);
         hidingState = new HidingState(this, moveSM);
         turnState = new TurnState(this, moveSM);
+        vaultState = new VaultState(this, moveSM);
 
         moveSM.Initialize(defaultState);
     }
@@ -103,10 +105,9 @@ public class PlayerControllerScr : MonoBehaviour
         if (mousePositionX != newMousePositionX)
         {
             mousePositionX = newMousePositionX;
-
+            playerAnimator.SetFloat("DirectionFloat", mousePositionX);
             return true;
-        }
-        playerAnimator.SetFloat("Direction", mousePositionX);
+        }      
         return false;
     }
 
@@ -115,15 +116,20 @@ public class PlayerControllerScr : MonoBehaviour
         playerAnimator.SetTrigger("Turn");
     }
 
+    public void ActiveVaultAnimation()
+    {
+        playerAnimator.SetTrigger("Vault");
+    }
+
     public void Hiding()
     {
         shelterPosition.y = transform.position.y;
         transform.position = Vector3.MoveTowards(transform.position, shelterPosition, 3 * Time.deltaTime);
     }
 
-    private void HideZone(Vector3 shelterPosition)
+    private void InteractZone(Vector3 shelterPosition)
     {
         this.shelterPosition = shelterPosition;
-        mayHide = !mayHide;
+        mayHide = !mayHide;        
     }
 }

@@ -36,6 +36,11 @@ public class DefaultState : State
             stateMachine.ChangeState(player.turnState);
         }
 
+        if(player.mayVault && Input.GetKeyDown(KeyCode.Space))
+        {
+            stateMachine.ChangeState(player.vaultState);
+        }
+
         if (player.mayHide && Input.GetKeyDown(KeyCode.E))
         {
             stateMachine.ChangeState(player.hidingState);
