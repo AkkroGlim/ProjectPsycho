@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class HidingState : State
 {   
-    private bool unhiding;
-
     public HidingState(PlayerControllerScr player, StateMachine stateMachine) : base(player, stateMachine) { }
 
     public override void Enter()
@@ -21,13 +19,12 @@ public class HidingState : State
     public override void HandleInput()
     {
         base.HandleInput();
-        unhiding = Input.GetKeyUp(KeyCode.E);
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (unhiding)
+        if (Input.GetKeyUp(KeyCode.E))
         {
             stateMachine.ChangeState(player.defaultState);
         }

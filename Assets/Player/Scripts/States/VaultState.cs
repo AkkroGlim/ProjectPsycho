@@ -8,11 +8,13 @@ public class VaultState : State
     {
         base.Enter();
         player.ActiveVaultAnimation();
+        player.PlayerTangibilityTogle();
     }
 
     public override void Exit()
     {
         base.Exit();
+        player.PlayerTangibilityTogle();
     }
 
     public override void HandleInput()

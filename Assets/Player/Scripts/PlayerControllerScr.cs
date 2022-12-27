@@ -4,12 +4,15 @@ public class PlayerControllerScr : MonoBehaviour
 {
     private Animator playerAnimator;
     private Rigidbody playerRigid;
+    private Collider playerCol;
     private StateMachine moveSM;
 
     private float defaultPlayerPositionX;
-    public bool mayVault;
-    public bool mayHide;
+    public bool mayInteract { get; private set; }
     private Vector3 shelterPosition;
+    private Vector3 hidingPosition;
+    private Vector3 distanceToShelter;
+    private Vector3 vaultPosition;
 
     private float speed = 70f;
     private float walkSpeed = 70f;
@@ -26,10 +29,11 @@ public class PlayerControllerScr : MonoBehaviour
     void Start()
     {
         playerRigid = GetComponent<Rigidbody>();
+        playerCol = GetComponent<Collider>();
         playerAnimator = GetComponent<Animator>();
         TriggerEvent.triggerEvent.AddListener(InteractZone);
         defaultPlayerPositionX = transform.position.x;
-        mayHide = false;
+        mayInteract = false;
 
         mousePositionX = 1f;
         newMousePositionX = Mathf.Sign(Input.mousePosition.x - Screen.width / 2);
@@ -57,7 +61,7 @@ public class PlayerControllerScr : MonoBehaviour
 
     public void Centring()
     {
-        if(defaultPlayerPositionX != transform.position.x)
+        if (defaultPlayerPositionX != transform.position.x)
         {
             Vector3 target = transform.position;
             target.x = defaultPlayerPositionX;
@@ -107,7 +111,7 @@ public class PlayerControllerScr : MonoBehaviour
             mousePositionX = newMousePositionX;
             playerAnimator.SetFloat("DirectionFloat", mousePositionX);
             return true;
-        }      
+        }
         return false;
     }
 
@@ -123,13 +127,37 @@ public class PlayerControllerScr : MonoBehaviour
 
     public void Hiding()
     {
-        shelterPosition.y = transform.position.y;
-        transform.position = Vector3.MoveTowards(transform.position, shelterPosition, 3 * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, hidingPosition, 3 * Time.deltaTime);
     }
 
-    private void InteractZone(Vector3 shelterPosition)
+    private void InteractZone(Vector3 shelterPosition, Vector3 distance)
     {
         this.shelterPosition = shelterPosition;
-        mayHide = !mayHide;        
+        distanceToShelter = distance;
+        hidingPosition = shelterPosition;        
+        hidingPosition.y = transform.position.y;
+        hidingPosition += distanceToShelter * Mathf.Sign(transform.position.z - this.shelterPosition.z);
+        Debug.Log(hidingPosition);
+        mayInteract = !mayInteract;
+    }
+
+    public void Vault()
+    {
+
+    }
+
+    public void PlayerTangibilityTogle()
+    {
+        playerRigid.useGravity = !playerCol.enabled;
+        playerCol.enabled = !playerCol.enabled;
+    }
+
+    public bool MayVault()
+    {
+        if (mousePositionX == Mathf.Sign(shelterPosition.z - transform.position.z) && mayInteract)
+        {
+            return true;
+        }
+        return false;        
     }
 }
