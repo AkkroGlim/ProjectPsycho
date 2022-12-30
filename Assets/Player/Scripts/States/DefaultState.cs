@@ -17,6 +17,7 @@ public class DefaultState : State
     {
         base.Exit();
         horizontalInput = 0f;
+        player.RemoveSpeed();
     }
 
     public override void HandleInput()

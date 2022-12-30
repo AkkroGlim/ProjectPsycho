@@ -4,17 +4,21 @@ public class VaultState : State
 {
     public VaultState(PlayerControllerScr player, StateMachine stateMachine) : base(player, stateMachine) { }
 
+    private Vector3 targetVaultPosition;
+
     public override void Enter()
     {
         base.Enter();
-        player.ActiveVaultAnimation();
         player.PlayerTangibilityTogle();
+        targetVaultPosition = player.PrepareToVault();
+        player.ActiveVaultAnimation();
+        HidingHint.HintToggle();
     }
 
     public override void Exit()
     {
         base.Exit();
-        player.PlayerTangibilityTogle();
+        player.PlayerTangibilityTogle();       
     }
 
     public override void HandleInput()
@@ -25,6 +29,11 @@ public class VaultState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (player.transform.position == targetVaultPosition)
+        {
+            stateMachine.ChangeState(player.defaultState);
+        }
+        player.Vault();
     }
 
     public override void PhysicsUpdate()

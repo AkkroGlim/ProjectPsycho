@@ -130,20 +130,27 @@ public class PlayerControllerScr : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, hidingPosition, 3 * Time.deltaTime);
     }
 
-    private void InteractZone(Vector3 shelterPosition, Vector3 distance)
+    private void InteractZone(Vector3 shelterPosition, Vector3 distance, bool mayInteract)
     {
         this.shelterPosition = shelterPosition;
         distanceToShelter = distance;
-        hidingPosition = shelterPosition;        
+        hidingPosition = shelterPosition;
         hidingPosition.y = transform.position.y;
         hidingPosition += distanceToShelter * Mathf.Sign(transform.position.z - this.shelterPosition.z);
-        Debug.Log(hidingPosition);
-        mayInteract = !mayInteract;
+
+        this.mayInteract = mayInteract;
     }
 
     public void Vault()
     {
+        transform.position = Vector3.MoveTowards(transform.position, vaultPosition, Time.deltaTime);
+    }
 
+    public Vector3 PrepareToVault()
+    {
+        transform.position = hidingPosition;
+        vaultPosition = hidingPosition -= 2 * distanceToShelter * Mathf.Sign(transform.position.z - shelterPosition.z);
+        return vaultPosition;
     }
 
     public void PlayerTangibilityTogle()
@@ -158,6 +165,11 @@ public class PlayerControllerScr : MonoBehaviour
         {
             return true;
         }
-        return false;        
+        return false;
+    }
+
+    public void RemoveSpeed()
+    {
+        playerRigid.velocity = Vector3.zero;
     }
 }

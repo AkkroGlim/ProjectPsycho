@@ -9,7 +9,7 @@ public class ShelterTrigger : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("Player"))
         {
-            TriggerEvent.triggerEvent.Invoke(shelter.position, DistanceToShelter);
+            TriggerEvent.triggerEvent.Invoke(shelter.position, DistanceToShelter, true);
             HidingHint.HintToggle();
         }
     }
@@ -18,7 +18,7 @@ public class ShelterTrigger : MonoBehaviour
     {
         if (other.gameObject.tag.Equals("Player"))
         {
-            TriggerEvent.triggerEvent.Invoke(Vector3.zero, Vector3.zero);
+            TriggerEvent.triggerEvent.Invoke(Vector3.zero, Vector3.zero, false);
             HidingHint.HintToggle();
         }        
     }
