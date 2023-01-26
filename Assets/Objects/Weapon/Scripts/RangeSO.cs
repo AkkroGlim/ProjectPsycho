@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
-[CreateAssetMenu(fileName = "Weapon", menuName = "WeaponData/Range/Gun", order = 51)]
+[CreateAssetMenu(fileName = "Weapon", menuName = "WeaponData/Range/Gun")]
 
 public class RangeSO : ScriptableObject
 {
