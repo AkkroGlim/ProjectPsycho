@@ -9,6 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b7bd8c1e81a34d4d8330fe4ebb43aca, type: 3}
-  m_Name: ImpactType
+  m_Script: {fileID: 11500000, guid: 817107133102cf846b3107e7c98e2354, type: 3}
+  m_Name: Default Surface
   m_EditorClassIdentifier: 
+  ImpactTypeEffects:
+  - ImpactType: {fileID: 11400000, guid: 36135921654d0194dadabdfa1b0e9b30, type: 2}
+    SurfaceEffect: {fileID: 11400000, guid: 2eb039de6aed26c47a26878c1685973e, type: 2}

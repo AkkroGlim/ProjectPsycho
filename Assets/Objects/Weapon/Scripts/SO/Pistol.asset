@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38efc6d841791224f9fa5f6195d067dc, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
-  ImpactType: {fileID: 0}
+  ImpactType: {fileID: 11400000, guid: 36135921654d0194dadabdfa1b0e9b30, type: 2}
   Type: 0
-  Name: Piu
-  ModelPrefab: {fileID: 919132149155446097, guid: c90bef31a200e01458205e03d1b66e93, type: 3}
-  SpawnPosition: {x: 0, y: 0, z: 0}
-  SpawnRotation: {x: 0, y: 0, z: 0}
+  Name: Pistol
+  ModelPrefab: {fileID: 6884418399246432612, guid: b67fb31b2b397594985b463fb2b16fa0, type: 3}
+  SpawnPosition: {x: -0.5, y: -0.15, z: 0.1}
+  SpawnRotation: {x: 102.214, y: -103.526, z: 76.769}
   ShootConfig: {fileID: 11400000, guid: 74fd33d771314a8458e3794043ac75fa, type: 2}
   TrailConfig: {fileID: 11400000, guid: 35e86eaef3c96854ab4a5b34a6fb7a03, type: 2}

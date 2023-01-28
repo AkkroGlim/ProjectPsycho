@@ -6,6 +6,7 @@ public class PlayerControllerScr : MonoBehaviour
     private Rigidbody playerRigid;
     private Collider playerCol;
     private StateMachine moveSM;
+    [SerializeField] private PlayerGunSelector GunSelector;
 
     private float defaultPlayerPositionX;
     public bool mayInteract { get; private set; }
@@ -171,5 +172,13 @@ public class PlayerControllerScr : MonoBehaviour
     public void RemoveSpeed()
     {
         playerRigid.velocity = Vector3.zero;
+    }
+
+    public void Attack()
+    {
+        if(Input.GetMouseButton(0) && GunSelector.ActiveWeapon != null)
+        {
+            GunSelector.ActiveWeapon.Shoot();
+        }
     }
 }

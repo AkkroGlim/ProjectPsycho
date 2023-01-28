@@ -9,12 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a07b7ff8aa81a6d4bb0ecacd0f6f57d2, type: 3}
-  m_Name: PistolShootConf
+  m_Script: {fileID: 11500000, guid: 7b7bd8c1e81a34d4d8330fe4ebb43aca, type: 3}
+  m_Name: BulletImpact
   m_EditorClassIdentifier: 
-  MaxDistance: 0
-  FireRate: 0.25
-  HitMask:
-    serializedVersion: 2
-    m_Bits: 1
-  Spread: {x: 0.03, y: 0.03, z: 0.03}
