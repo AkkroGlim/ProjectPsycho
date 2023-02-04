@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b0b8158abe175045b9cb6aee14848e0, type: 3}
   m_Name: Generic Play Audio - Bullet Impact
   m_EditorClassIdentifier: 
-  AudioSourcePrefab: {fileID: 0}
-  AudioClips: []
+  AudioSourcePrefab: {fileID: 1880962239384351229, guid: f06f25753dcedea4997e5fb35e7a5c4a, type: 3}
+  AudioClips:
+  - {fileID: 8300000, guid: c72349e2a59a7fc42a0c4c058fe11b2e, type: 3}
+  - {fileID: 8300000, guid: fc9f97271e2ea2c4191d4dcdccf9d755, type: 3}
   VolumeRange: {x: 0, y: 1}

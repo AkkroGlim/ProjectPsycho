@@ -15,12 +15,15 @@ public class RangeSO : ScriptableObject
 
     public ShootConfigSO ShootConfig;
     public TrailConfigSO TrailConfig;
+    public AmmoConfigSO AmmoConfig;
 
     private MonoBehaviour ActiveMonoBehaviour;
     private GameObject Model;
     private float LastShootTime;
     private ParticleSystem ShootSystem;
     private ObjectPool<TrailRenderer> TrailPool;
+    delegate bool FireType(int i);
+    FireType fireType;
 
     public void Spawn(MonoBehaviour ActiveMonoBehaviour, Transform Parent)
     {
@@ -34,11 +37,20 @@ public class RangeSO : ScriptableObject
         Model.transform.localRotation = Quaternion.Euler(SpawnRotation);
 
         ShootSystem = Model.GetComponentInChildren<ParticleSystem>();
+
+       if(Type == RangeType.Pistol)
+        {
+            fireType = Input.GetMouseButtonDown;
+        }
+        else
+        {
+            fireType = Input.GetMouseButton;
+        }
     }
 
     public void Shoot()
     {
-        if (Time.time > ShootConfig.FireRate + LastShootTime)
+        if (Time.time > ShootConfig.FireRate + LastShootTime && AmmoConfig.CurrentClipAmmo > 0)
         {
             LastShootTime = Time.time;
             ShootSystem.Play();
@@ -47,6 +59,8 @@ public class RangeSO : ScriptableObject
                             Random.Range(-ShootConfig.Spread.y, ShootConfig.Spread.y),
                             Random.Range(-ShootConfig.Spread.z, ShootConfig.Spread.z));
             shootDirection.Normalize();
+
+            AmmoConfig.CurrentClipAmmo--;
 
             if (Physics.Raycast(ShootSystem.transform.position, shootDirection, out RaycastHit hit, float.MaxValue, ShootConfig.HitMask))
             {
@@ -57,6 +71,11 @@ public class RangeSO : ScriptableObject
                 ActiveMonoBehaviour.StartCoroutine(PlayTrail(ShootSystem.transform.position, ShootSystem.transform.position + (shootDirection * TrailConfig.MissDistance), new RaycastHit()));
             }
         }
+    }
+
+    public bool CanReload()
+    {
+        return AmmoConfig.CanReload();
     }
 
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)

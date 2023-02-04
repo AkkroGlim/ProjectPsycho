@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a07b7ff8aa81a6d4bb0ecacd0f6f57d2, type: 3}
   m_Name: PistolShootConf
   m_EditorClassIdentifier: 
-  MaxDistance: 0
-  FireRate: 0.25
+  FireRate: 0.5
   HitMask:
     serializedVersion: 2
     m_Bits: 1

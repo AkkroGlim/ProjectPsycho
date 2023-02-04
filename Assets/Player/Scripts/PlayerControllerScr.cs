@@ -7,6 +7,7 @@ public class PlayerControllerScr : MonoBehaviour
     private Collider playerCol;
     private StateMachine moveSM;
     [SerializeField] private PlayerGunSelector GunSelector;
+    [SerializeField] private bool AutoReload = true;
 
     private float defaultPlayerPositionX;
     public bool mayInteract { get; private set; }
@@ -174,9 +175,10 @@ public class PlayerControllerScr : MonoBehaviour
         playerRigid.velocity = Vector3.zero;
     }
 
+    
     public void Attack()
     {
-        if(Input.GetMouseButton(0) && GunSelector.ActiveWeapon != null)
+        if (Input.GetMouseButton(0) && GunSelector.ActiveWeapon != null)
         {
             GunSelector.ActiveWeapon.Shoot();
         }

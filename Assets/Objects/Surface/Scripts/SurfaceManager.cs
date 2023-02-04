@@ -82,7 +82,7 @@ public class SurfaceManager : MonoBehaviour
                 {
                     if (typeEffect.ImpactType == Impact)
                     {
-                        PlayEffects(HitPoint, HitNormal, typeEffect.SurfaceEffect, 1);
+                        PlayEffects(HitPoint, HitNormal, typeEffect.SurfaceEffect, 0.5f);
                     }
                 }
             }
