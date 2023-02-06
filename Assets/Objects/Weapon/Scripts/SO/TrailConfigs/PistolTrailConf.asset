@@ -18,7 +18,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.05
+      value: 0.008724976
       inSlope: -0.006340736
       outSlope: -0.006340736
       tangentMode: 0
@@ -69,4 +69,4 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   MissDistance: 50
-  SimulationSpeed: 50
+  SimulationSpeed: 200

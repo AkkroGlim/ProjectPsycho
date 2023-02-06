@@ -78,6 +78,11 @@ public class RangeSO : ScriptableObject
         return AmmoConfig.CanReload();
     }
 
+    public void EndReload()
+    {
+        AmmoConfig.Reload();
+    }
+
     private IEnumerator PlayTrail(Vector3 StartPoint, Vector3 EndPoint, RaycastHit Hit)
     {
         TrailRenderer instance = TrailPool.Get();

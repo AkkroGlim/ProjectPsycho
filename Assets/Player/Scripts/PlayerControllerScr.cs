@@ -8,6 +8,8 @@ public class PlayerControllerScr : MonoBehaviour
     private StateMachine moveSM;
     [SerializeField] private PlayerGunSelector GunSelector;
     [SerializeField] private bool AutoReload = true;
+    private bool isReloading;
+    [SerializeField] private PlayerIK playerIK;
 
     private float defaultPlayerPositionX;
     public bool mayInteract { get; private set; }
@@ -175,12 +177,41 @@ public class PlayerControllerScr : MonoBehaviour
         playerRigid.velocity = Vector3.zero;
     }
 
-    
+
     public void Attack()
     {
-        if (Input.GetMouseButton(0) && GunSelector.ActiveWeapon != null)
+        if (Input.GetMouseButton(0) && GunSelector.ActiveWeapon != null && GunSelector.ActiveWeapon.AmmoConfig.CurrentClipAmmo > 0 && !isReloading)
         {
             GunSelector.ActiveWeapon.Shoot();
         }
+    }
+
+    public void Reload()
+    {
+        if (ShouldAutoReload() || ShouldManualReload())
+        {
+            isReloading = true;
+            playerAnimator.SetTrigger("Reload");
+            playerIK.HandIKAmount = 0.25f;
+            playerIK.ElbowIKAmount = 0.25f;
+        }
+    }
+
+    private void EndReload()
+    {
+        GunSelector.ActiveWeapon.EndReload();
+        playerIK.HandIKAmount = 1f;
+        playerIK.ElbowIKAmount = 1f;
+        isReloading = false;
+    }
+
+    private bool ShouldManualReload()
+    {
+        return !isReloading && Input.GetKeyUp(KeyCode.R) && GunSelector.ActiveWeapon.CanReload();
+    }
+
+    private bool ShouldAutoReload()
+    {
+        return !isReloading && AutoReload && GunSelector.ActiveWeapon.AmmoConfig.CurrentClipAmmo == 0 && GunSelector.ActiveWeapon.CanReload();
     }
 }

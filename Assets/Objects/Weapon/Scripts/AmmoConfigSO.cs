@@ -12,6 +12,12 @@ public class AmmoConfigSO : ScriptableObject
     public int CurrentAmmo = 120;
     public int CurrentClipAmmo = 30;
 
+    private void OnValidate()
+    {
+        CurrentAmmo = MaxAmmo;
+        CurrentClipAmmo = ClipSize;
+    }
+
     public void Reload()
     {
         int maxReloadAmount = Mathf.Min(ClipSize, CurrentAmmo);

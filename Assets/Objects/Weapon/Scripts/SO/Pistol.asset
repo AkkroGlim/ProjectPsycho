@@ -20,3 +20,4 @@ MonoBehaviour:
   SpawnRotation: {x: 102.214, y: -103.526, z: 76.769}
   ShootConfig: {fileID: 11400000, guid: 74fd33d771314a8458e3794043ac75fa, type: 2}
   TrailConfig: {fileID: 11400000, guid: 35e86eaef3c96854ab4a5b34a6fb7a03, type: 2}
+  AmmoConfig: {fileID: 11400000, guid: 7d1289e4092e7cc4ba9145f03f1cf777, type: 2}

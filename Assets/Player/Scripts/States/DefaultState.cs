@@ -31,7 +31,9 @@ public class DefaultState : State
     {
         base.LogicUpdate();
         player.Centring();
+        player.Reload();
         player.Attack();
+        
 
         if (player.IsPlayerTurnAround())
         {
