@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
-[CreateAssetMenu(fileName = "Weapon", menuName = "WeaponData/Range/Gun")]
+[CreateAssetMenu(fileName = "Weapon", menuName = "WeaponData/Range/Weapon", order = 1)]
 
 public class RangeSO : ScriptableObject
 {
@@ -16,14 +16,17 @@ public class RangeSO : ScriptableObject
     public ShootConfigSO ShootConfig;
     public TrailConfigSO TrailConfig;
     public AmmoConfigSO AmmoConfig;
+    public AudioConfigSO AudioConfig;
+    public DamageConfigSO DamageConfig;
 
     private MonoBehaviour ActiveMonoBehaviour;
     private GameObject Model;
+    private AudioSource ShootingAudio;
     private float LastShootTime;
     private ParticleSystem ShootSystem;
     private ObjectPool<TrailRenderer> TrailPool;
-    delegate bool FireType(int i);
-    FireType fireType;
+    private delegate bool FireType(int i);//
+    FireType fireType; //
 
     public void Spawn(MonoBehaviour ActiveMonoBehaviour, Transform Parent)
     {
@@ -37,8 +40,9 @@ public class RangeSO : ScriptableObject
         Model.transform.localRotation = Quaternion.Euler(SpawnRotation);
 
         ShootSystem = Model.GetComponentInChildren<ParticleSystem>();
+        ShootingAudio = Model.GetComponent<AudioSource>();
 
-       if(Type == RangeType.Pistol)
+        if (Type == RangeType.Pistol)  //
         {
             fireType = Input.GetMouseButtonDown;
         }
@@ -48,12 +52,21 @@ public class RangeSO : ScriptableObject
         }
     }
 
-    public void Shoot()
+    public void TryToShoot()
     {
         if (Time.time > ShootConfig.FireRate + LastShootTime && AmmoConfig.CurrentClipAmmo > 0)
         {
             LastShootTime = Time.time;
+
+            if(AmmoConfig.CurrentClipAmmo == 0)
+            {
+                AudioConfig.PlayOutOfAmmoClip(ShootingAudio);
+                return;
+            }
+
             ShootSystem.Play();
+            AudioConfig.PlayShootClip(ShootingAudio, AmmoConfig.CurrentClipAmmo == 1);
+
             Vector3 shootDirection = ShootSystem.transform.forward +
                 new Vector3(Random.Range(-ShootConfig.Spread.x, ShootConfig.Spread.x),
                             Random.Range(-ShootConfig.Spread.y, ShootConfig.Spread.y),
@@ -76,6 +89,11 @@ public class RangeSO : ScriptableObject
     public bool CanReload()
     {
         return AmmoConfig.CanReload();
+    }
+
+    public void StartReloading()
+    {
+        AudioConfig.PlayReloadClip(ShootingAudio);
     }
 
     public void EndReload()
@@ -106,6 +124,10 @@ public class RangeSO : ScriptableObject
         if(Hit.collider != null)
         {
             SurfaceManager.Instance.HandleImpact(Hit.transform.gameObject, EndPoint, Hit.normal, ImpactType, 0);
+            if(Hit.collider.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.TakeDamage(DamageConfig.GetDamage());
+            }
         }
 
         yield return new WaitForSeconds(TrailConfig.Duration);

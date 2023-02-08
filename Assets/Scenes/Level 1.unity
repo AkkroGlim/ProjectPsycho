@@ -3159,10 +3159,42 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1594915403073179115, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+      propertyPath: m_Volume
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 3704881911964583712, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
       propertyPath: enemul
       value: 
       objectReference: {fileID: 3704881911964583714, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+    - target: {fileID: 3704881911964583712, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+      propertyPath: _Health
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704881911964583712, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+      propertyPath: enemyMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 4409e47d3ad00964aa3eff13b81b0438, type: 2}
+    - target: {fileID: 3704881911964583712, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+      propertyPath: _MaxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704881911964583712, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+      propertyPath: enemyAudio
+      value: 
+      objectReference: {fileID: 3704881912385168340}
+    - target: {fileID: 3704881911964583712, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+      propertyPath: enemyClips.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704881911964583712, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+      propertyPath: enemyClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: f8a9d1f26777b064f962bc3b08ac568f, type: 3}
+    - target: {fileID: 3704881911964583712, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+      propertyPath: enemyClips.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 90a1cf26b3551b344b397e89a6af9189, type: 3}
     - target: {fileID: 3704881911964583713, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
       propertyPath: m_Mass
       value: 1
@@ -3229,6 +3261,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+--- !u!82 &3704881912385168340 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1594915403073179115, guid: ee32a0b989ff87c4ab8d1c478ca1ec98, type: 3}
+  m_PrefabInstance: {fileID: 3704881912385168339}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3742394135621078346
 Transform:
   m_ObjectHideFlags: 0
@@ -3892,8 +3929,9 @@ MonoBehaviour:
   GunParent: {fileID: 7078722787618622684}
   Weapons:
   - {fileID: 11400000, guid: b20d44f124c9ed54386dc9c95e46db0c, type: 2}
+  - {fileID: 11400000, guid: cbde777b1729d2f418a76095185bf598, type: 2}
   InverseKinematics: {fileID: 5866666020913744081}
-  ActiveWeapon: {fileID: 11400000, guid: b20d44f124c9ed54386dc9c95e46db0c, type: 2}
+  ActiveWeapon: {fileID: 0}
 --- !u!4 &5901452234865229865
 Transform:
   m_ObjectHideFlags: 0

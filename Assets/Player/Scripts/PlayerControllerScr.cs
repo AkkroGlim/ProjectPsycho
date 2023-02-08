@@ -182,7 +182,7 @@ public class PlayerControllerScr : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && GunSelector.ActiveWeapon != null && GunSelector.ActiveWeapon.AmmoConfig.CurrentClipAmmo > 0 && !isReloading)
         {
-            GunSelector.ActiveWeapon.Shoot();
+            GunSelector.ActiveWeapon.TryToShoot();
         }
     }
 
@@ -190,6 +190,7 @@ public class PlayerControllerScr : MonoBehaviour
     {
         if (ShouldAutoReload() || ShouldManualReload())
         {
+            GunSelector.ActiveWeapon.StartReloading();
             isReloading = true;
             playerAnimator.SetTrigger("Reload");
             playerIK.HandIKAmount = 0.25f;
