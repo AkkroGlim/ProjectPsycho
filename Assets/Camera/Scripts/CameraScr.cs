@@ -4,34 +4,49 @@ using UnityEngine;
 public class CameraScr : MonoBehaviour
 {
     [SerializeField] private Transform player;
-    private int distance = 20;
+    [SerializeField] private int distance = 10;
+    [SerializeField] private float cameraHeight;
+
     private float focusRadius = 1f;
     private Vector3 focusPoint;
     private float focusCentering = 0.7f;
     private bool focusFlag = false;
     private float t = 1f;
     private float cameraSpeedMultiplier = 0.8f;
-    private delegate void MoveVariant();
-    MoveVariant moveVar;
+    private Vector3 lookDirection;
 
     private void Awake()
     {
-        focusPoint = player.position;
-        PlayerEvent.moveEvent.AddListener(MoveChoice);
-        moveVar += MoveCamera;
+        focusPoint = transform.position;
+        lookDirection = transform.forward;
     }
 
     private void LateUpdate()
-    {        
-        if(Time.timeScale > 0)
+    {
+        if (Time.timeScale > 0)
         {
-            moveVar();
+            focusPoint.z = player.position.z;
+            transform.position = focusPoint - lookDirection * distance +  cameraHeight * Vector3.up;
         }
-        
-
-        Vector3 lookDirection = transform.forward;
-        transform.position = focusPoint - lookDirection * distance + Vector3.up;
     }
+
+    private void MoveCamera()
+    {
+        Vector3 targetPoint = player.position;
+        t = Mathf.Pow(1f - focusCentering, Time.unscaledDeltaTime);
+        focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     private void SmartMoveCamera()
     {
@@ -65,39 +80,12 @@ public class CameraScr : MonoBehaviour
                 else
                 {
                     targetPoint += new Vector3(0f, 0f, cameraSpeedMultiplier);
-                }               
+                }
                 focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
             }
-        }        
-    }
-
-    private void MoveCamera()
-    {
-        Vector3 targetPoint = player.position;
-        t = Mathf.Pow(1f - focusCentering, Time.unscaledDeltaTime);
-        focusPoint = Vector3.Lerp(targetPoint, focusPoint, t);
-    }
-
-    private void MoveChoice(bool i)
-    {
-        if (i)
-        {
-            moveVar = null;         
-            moveVar += SmartMoveCamera;
-        }
-        else
-        {
-            moveVar = null;
-            focusFlag = false;
-            t = 1f;
-            moveVar += MoveCamera;
         }
     }
 }
-
-
-
-
 
 //Vector3 targetPoint = player.position;
 //float distance = Vector3.Distance(targetPoint, focusPoint);
