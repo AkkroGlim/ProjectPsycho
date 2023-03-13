@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1e2e596bac315f440a3f2e1ae6c8b4f9, type: 3}
-  m_Name: Pistol
+  m_Name: Baton
   m_EditorClassIdentifier: 
-  RangeScrObj: {fileID: 11400000, guid: b20d44f124c9ed54386dc9c95e46db0c, type: 2}
-  MeleeScrObj: {fileID: 0}
-  WeaponType: 0
+  RangeScrObj: {fileID: 0}
+  MeleeScrObj: {fileID: 11400000, guid: 0d82b2a3c77e27142a60112a4810b0dd, type: 2}
+  WeaponType: 1

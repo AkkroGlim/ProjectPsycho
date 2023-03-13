@@ -8,15 +8,19 @@ using UnityEngine.UI;
 
 public class AmmoDisplay : MonoBehaviour
 {
-    [SerializeField] private PlayerGunSelector GunSelector;
+    [SerializeField] private GunSelector GunSelector;
     private Text AmmoText;
 
     private void Awake()
     {
         AmmoText = GetComponent<Text>();
+        if(GunSelector.ActiveWeapon.WeaponType != WeaponType.Range) //Доработать
+        {
+            AmmoText.gameObject.SetActive(false);
+        }
     }
     void Update()
     {
-        AmmoText.text = $"{GunSelector.ActiveWeapon.AmmoConfig.CurrentClipAmmo} / {GunSelector.ActiveWeapon.AmmoConfig.CurrentAmmo}";
+        AmmoText.text = $"{GunSelector.ActiveWeapon.RangeScrObj.AmmoConfig.CurrentClipAmmo} / {GunSelector.ActiveWeapon.RangeScrObj.AmmoConfig.CurrentAmmo}";
     }
 }

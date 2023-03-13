@@ -9,17 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38efc6d841791224f9fa5f6195d067dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 1e2e596bac315f440a3f2e1ae6c8b4f9, type: 3}
   m_Name: SMG
   m_EditorClassIdentifier: 
-  ImpactType: {fileID: 11400000, guid: 36135921654d0194dadabdfa1b0e9b30, type: 2}
-  Type: 1
-  Name: SMG
-  ModelPrefab: {fileID: 3923411520844341209, guid: bf01ecb32bd925f449fb421f257f9001, type: 3}
-  SpawnPosition: {x: -0.5, y: -0.15, z: 0.1}
-  SpawnRotation: {x: 102.214, y: -103.526, z: 76.769}
-  ShootConfig: {fileID: 11400000, guid: 50bae4e573d6a3740a278c85568d9cac, type: 2}
-  TrailConfig: {fileID: 11400000, guid: 1645fc3e78bc6bd4b911f62791da07ab, type: 2}
-  AmmoConfig: {fileID: 11400000, guid: 3bc94f1519fa27d47b67653e123d424f, type: 2}
-  AudioConfig: {fileID: 11400000, guid: e8628a54afaed964e83c4ad4e3828d47, type: 2}
-  DamageConfig: {fileID: 11400000, guid: 53d07376b283ade4f88a5055e590b61b, type: 2}
+  RangeScrObj: {fileID: 11400000, guid: cbde777b1729d2f418a76095185bf598, type: 2}
+  MeleeScrObj: {fileID: 0}
+  WeaponType: 0

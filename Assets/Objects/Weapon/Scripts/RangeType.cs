@@ -2,5 +2,8 @@
 public enum RangeType
 {
    Pistol, 
-   SMG
+   SMG,
+   empty
 }
+
+

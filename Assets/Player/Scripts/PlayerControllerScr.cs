@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class PlayerControllerScr : MonoBehaviour
@@ -6,7 +7,7 @@ public class PlayerControllerScr : MonoBehaviour
     private Rigidbody playerRigid;
     private Collider playerCol;
     private StateMachine moveSM;
-    [SerializeField] private PlayerGunSelector GunSelector;
+    [SerializeField] private GunSelector GunSelector;
     [SerializeField] private bool AutoReload = true;
     private bool isReloading;
     [SerializeField] private PlayerIK playerIK;
@@ -30,6 +31,9 @@ public class PlayerControllerScr : MonoBehaviour
     public TurnState turnState;
     public VaultState vaultState;
 
+    public delegate void ActionWithWeapon();
+    public ActionWithWeapon actionWithWeapon;
+
     void Start()
     {
         playerRigid = GetComponent<Rigidbody>();
@@ -50,6 +54,7 @@ public class PlayerControllerScr : MonoBehaviour
         vaultState = new VaultState(this, moveSM);
 
         moveSM.Initialize(defaultState);
+        ChangeAction();
     }
 
     private void Update()
@@ -70,6 +75,35 @@ public class PlayerControllerScr : MonoBehaviour
             Vector3 target = transform.position;
             target.x = defaultPlayerPositionX;
             transform.position = Vector3.MoveTowards(transform.position, target, 3 * Time.deltaTime);
+        }
+    }
+
+    private void ActionWithRange()
+    {
+        Reload();
+        Attack();
+    }
+
+    private void ActionWithMelee()
+    {
+        // something
+    }
+
+    private void ChangeAction()
+    {
+        switch (GunSelector.ActiveWeapon.WeaponType)
+        {
+            case WeaponType.Melee:
+                actionWithWeapon = null;
+                actionWithWeapon += ActionWithMelee;
+                break;
+            case WeaponType.Range:
+                actionWithWeapon = null;
+                actionWithWeapon += ActionWithRange;
+                break;
+            case WeaponType.Empty:
+                actionWithWeapon = null;
+                break;
         }
     }
 
@@ -180,9 +214,9 @@ public class PlayerControllerScr : MonoBehaviour
 
     public void Attack()
     {
-        if (Input.GetMouseButton(0) && GunSelector.ActiveWeapon != null && GunSelector.ActiveWeapon.AmmoConfig.CurrentClipAmmo > 0 && !isReloading)
+        if (Input.GetMouseButton(0) && GunSelector.ActiveWeapon.RangeScrObj != null && GunSelector.ActiveWeapon.RangeScrObj.AmmoConfig.CurrentClipAmmo > 0 && !isReloading)
         {
-            GunSelector.ActiveWeapon.TryToShoot();
+            GunSelector.ActiveWeapon.RangeScrObj.TryToShoot();
         }
     }
 
@@ -190,7 +224,7 @@ public class PlayerControllerScr : MonoBehaviour
     {
         if (ShouldAutoReload() || ShouldManualReload())
         {
-            GunSelector.ActiveWeapon.StartReloading();
+            GunSelector.ActiveWeapon.RangeScrObj.StartReloading();
             isReloading = true;
             playerAnimator.SetTrigger("Reload");
             playerIK.HandIKAmount = 0.25f;
@@ -200,7 +234,7 @@ public class PlayerControllerScr : MonoBehaviour
 
     private void EndReload()
     {
-        GunSelector.ActiveWeapon.EndReload();
+        GunSelector.ActiveWeapon.RangeScrObj.EndReload();
         playerIK.HandIKAmount = 1f;
         playerIK.ElbowIKAmount = 1f;
         isReloading = false;
@@ -208,11 +242,11 @@ public class PlayerControllerScr : MonoBehaviour
 
     private bool ShouldManualReload()
     {
-        return !isReloading && Input.GetKeyUp(KeyCode.R) && GunSelector.ActiveWeapon.CanReload();
+        return !isReloading && Input.GetKeyUp(KeyCode.R) && GunSelector.ActiveWeapon.RangeScrObj.CanReload();
     }
 
     private bool ShouldAutoReload()
     {
-        return !isReloading && AutoReload && GunSelector.ActiveWeapon.AmmoConfig.CurrentClipAmmo == 0 && GunSelector.ActiveWeapon.CanReload();
+        return !isReloading && AutoReload && GunSelector.ActiveWeapon.RangeScrObj.AmmoConfig.CurrentClipAmmo == 0 && GunSelector.ActiveWeapon.RangeScrObj.CanReload();
     }
 }

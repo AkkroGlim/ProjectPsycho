@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private AudioSource enemyAudio;
     [SerializeField] private AudioClip[] enemyClips;
 
+    [SerializeField] private GameObject weaponTrigger;
+
     public ManhuntState manhuntState;
     public AttackState attackState;
     public DeathState deathState;
@@ -83,10 +85,10 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
     private void Die(Vector3 position)
-    {
-        
+    {       
         enemyRigid.constraints = RigidbodyConstraints.None;
         enemyRigid.AddForce(Vector3.forward);
         esm.ChangeState(deathState);
+        weaponTrigger.SetActive(true);
     }
 }

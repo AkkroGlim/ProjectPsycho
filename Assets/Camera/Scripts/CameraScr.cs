@@ -4,7 +4,7 @@ using UnityEngine;
 public class CameraScr : MonoBehaviour
 {
     [SerializeField] private Transform player;
-    private int distance = 10;
+    private int distance = 20;
     private float focusRadius = 1f;
     private Vector3 focusPoint;
     private float focusCentering = 0.7f;

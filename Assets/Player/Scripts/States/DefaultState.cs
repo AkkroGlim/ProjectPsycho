@@ -31,16 +31,13 @@ public class DefaultState : State
     {
         base.LogicUpdate();
         player.Centring();
-        player.Reload();
-        player.Attack();
-        
 
         if (player.IsPlayerTurnAround())
         {
             stateMachine.ChangeState(player.turnState);
         }
 
-        if(player.mayInteract && Input.GetKeyDown(KeyCode.Space) && player.MayVault())
+        if (player.mayInteract && Input.GetKeyDown(KeyCode.Space) && player.MayVault())
         {
             stateMachine.ChangeState(player.vaultState);
         }
@@ -49,6 +46,9 @@ public class DefaultState : State
         {
             stateMachine.ChangeState(player.hidingState);
         }
+
+        player.actionWithWeapon?.Invoke();
+        
     }
 
     public override void PhysicsUpdate()

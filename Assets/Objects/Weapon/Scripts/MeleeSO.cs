@@ -6,10 +6,23 @@ using UnityEngine;
 
 public class MeleeSO : ScriptableObject
 {
-    [Header("Info")]
     public new string name;
-
-    [Header("Attack")]
+    public MeleeType Type;
     public float damage;
     public float attackSpeed;
+
+    public GameObject ModelPrefab;
+    private GameObject model;
+
+    public Vector3 SpawnPosition;
+    public Vector3 SpawnRotation;
+    
+
+    public void Spawn(Transform parent)
+    {
+        model = Instantiate(ModelPrefab);
+        model.transform.SetParent(parent, false);
+        model.transform.localPosition = SpawnPosition;
+        model.transform.localRotation = Quaternion.Euler(SpawnRotation);                
+    }
 }

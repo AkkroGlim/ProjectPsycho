@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38efc6d841791224f9fa5f6195d067dc, type: 3}
+  m_Name: Pistol
+  m_EditorClassIdentifier: 
+  ImpactType: {fileID: 11400000, guid: 36135921654d0194dadabdfa1b0e9b30, type: 2}
+  Type: 0
+  Name: Pistol
+  ModelPrefab: {fileID: 6884418399246432612, guid: b67fb31b2b397594985b463fb2b16fa0, type: 3}
+  SpawnPosition: {x: -0.5, y: -0.15, z: 0.1}
+  SpawnRotation: {x: 102.214, y: -103.526, z: 76.769}
+  ShootConfig: {fileID: 11400000, guid: 74fd33d771314a8458e3794043ac75fa, type: 2}
+  TrailConfig: {fileID: 11400000, guid: 35e86eaef3c96854ab4a5b34a6fb7a03, type: 2}
+  AmmoConfig: {fileID: 11400000, guid: 7d1289e4092e7cc4ba9145f03f1cf777, type: 2}
+  AudioConfig: {fileID: 11400000, guid: 9edb1fb8cc9f20f4383bb267483af5ad, type: 2}
+  DamageConfig: {fileID: 11400000, guid: 36d8058e312a9fd44a421367ffc6fead, type: 2}

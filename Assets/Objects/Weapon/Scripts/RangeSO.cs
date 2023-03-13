@@ -7,8 +7,8 @@ using UnityEngine.Pool;
 public class RangeSO : ScriptableObject
 {
     public ImpactType ImpactType;
-    public RangeType Type;
     public string Name;
+    public RangeType Type;
     public GameObject ModelPrefab;
     public Vector3 SpawnPosition;
     public Vector3 SpawnRotation;
@@ -20,13 +20,15 @@ public class RangeSO : ScriptableObject
     public DamageConfigSO DamageConfig;
 
     private MonoBehaviour ActiveMonoBehaviour;
-    private GameObject Model;
+    private GameObject model;
     private AudioSource ShootingAudio;
     private float LastShootTime;
     private ParticleSystem ShootSystem;
     private ObjectPool<TrailRenderer> TrailPool;
-    private delegate bool FireType(int i);//
+    private delegate bool FireType(int i);// доделать
     FireType fireType; //
+
+    
 
     public void Spawn(MonoBehaviour ActiveMonoBehaviour, Transform Parent)
     {
@@ -34,13 +36,13 @@ public class RangeSO : ScriptableObject
         LastShootTime = 0f;
         TrailPool = new ObjectPool<TrailRenderer>(CreateTrail);
 
-        Model = Instantiate(ModelPrefab);
-        Model.transform.SetParent(Parent, false);
-        Model.transform.localPosition = SpawnPosition;
-        Model.transform.localRotation = Quaternion.Euler(SpawnRotation);
+        model = Instantiate(ModelPrefab);
+        model.transform.SetParent(Parent, false);
+        model.transform.localPosition = SpawnPosition;
+        model.transform.localRotation = Quaternion.Euler(SpawnRotation);
 
-        ShootSystem = Model.GetComponentInChildren<ParticleSystem>();
-        ShootingAudio = Model.GetComponent<AudioSource>();
+        ShootSystem = model.GetComponentInChildren<ParticleSystem>();
+        ShootingAudio = model.GetComponent<AudioSource>();
 
         if (Type == RangeType.Pistol)  //
         {
@@ -50,6 +52,7 @@ public class RangeSO : ScriptableObject
         {
             fireType = Input.GetMouseButton;
         }
+        
     }
 
     public void TryToShoot()
