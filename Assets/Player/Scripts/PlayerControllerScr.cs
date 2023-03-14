@@ -1,5 +1,6 @@
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerControllerScr : MonoBehaviour
 {
@@ -11,14 +12,16 @@ public class PlayerControllerScr : MonoBehaviour
     private bool isReloading;
     [SerializeField] private PlayerIK playerIK;
 
-
+    private bool isGrounded;
+    private Vector3 playerFallVelocity;
+    private float gravityValue = -9.81f;
 
     private float speed = 2f;
     private float speedMultiplier = 1;
 
     private const float MinSpeedMultiplier = 1;
     private const float MaxSpeedMultiplier = 2;
-    private const float MultiplierChangeStep = 0.04f;
+    private const float MultiplierChangeStep = 0.02f;
 
     public DefaultState defaultState;
 
@@ -86,13 +89,35 @@ public class PlayerControllerScr : MonoBehaviour
             speedMultiplier = Mathf.Clamp(speedMultiplier - MultiplierChangeStep, MinSpeedMultiplier, MaxSpeedMultiplier);
         }
 
-        Vector3 move = new Vector3(-Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal"));
-        controller.Move(move * Time.deltaTime * speed * speedMultiplier);
+        Vector3 move = new Vector3(-Input.GetAxis("Vertical"), 0, Input.GetAxis("Horizontal")) * speedMultiplier;
 
-        if(move != Vector3.zero)
+        playerAnimator.SetFloat("Move", Mathf.Max(Mathf.Abs(move.x), Mathf.Abs(move.z)));
+
+        controller.Move(move * Time.deltaTime * speed);
+
+        if (move != Vector3.zero)
         {
-            transform.forward = move;
+            float distance = Vector3.Distance(transform.forward, move);
+            if (distance >= 2)
+            {
+                Vector3 playerForward = transform.forward;
+                Vector3 z = Vector3.zero;
+                Vector3.OrthoNormalize(ref playerForward, ref z ,ref move);
+            }
+            Vector3 i = Vector3.Lerp(transform.forward, move, 0.02f);
+            transform.forward = i;         
         }
+    }
+
+    public void Gravity()
+    {
+        isGrounded = controller.isGrounded;
+        if (isGrounded && playerFallVelocity.y < 0)
+        {
+            playerFallVelocity.y = 0;
+        }
+        playerFallVelocity.y += gravityValue * Time.deltaTime;
+        controller.Move(playerFallVelocity * Time.deltaTime);
     }
 
     public void Attack()
