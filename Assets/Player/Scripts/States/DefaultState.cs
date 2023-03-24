@@ -27,8 +27,10 @@ public class DefaultState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        player.Gravity();
+        //player.Gravity();
         player.Move();
+        player.LookAtMouse();
+        //player.Turn();
         player.actionWithWeapon?.Invoke();
         
     }
