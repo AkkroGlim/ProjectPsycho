@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -27,8 +26,10 @@ public class PlayerControllerScr : MonoBehaviour
     private float speed;
 
     private float animationBlend;
+    private float animationSideWalk;
 
     public DefaultState defaultState;
+    public AimingState aimingState;
 
     public delegate void ActionWithWeapon();
     public ActionWithWeapon actionWithWeapon;
@@ -41,6 +42,7 @@ public class PlayerControllerScr : MonoBehaviour
 
         moveSM = new StateMachine();
         defaultState = new DefaultState(this, moveSM);
+        aimingState = new AimingState(this, moveSM);
         moveSM.Initialize(defaultState);
         ChangeAction();
     }
@@ -95,14 +97,49 @@ public class PlayerControllerScr : MonoBehaviour
         speed = Mathf.Round(speed * 1000f) / 1000f;
         speed = Mathf.Clamp(speed, 0, targetSpeed);
 
-
-        animationBlend = Mathf.Lerp(animationBlend, targetSpeed, speedChangeRate * Time.deltaTime);
-
-        if (animationBlend < 0.01f) animationBlend = 0f;
-
-        Vector3 inputDirection = new Vector3(-input.move.y, 0f, input.move.x);      
+        Vector3 inputDirection = new Vector3(-input.move.y, 0f, input.move.x);
         controller.Move(inputDirection.normalized * speed * Time.deltaTime);
+
+        if (moveSM.currentState.Equals(aimingState))
+        {
+            float verticalAngle = Vector3.SignedAngle(transform.forward, inputDirection, Vector3.up);
+            float horizontalAngle = Vector3.SignedAngle(transform.right, inputDirection, Vector3.up);            
+            float absoluteVerticalAngle = Mathf.Abs(verticalAngle);
+
+            if (absoluteVerticalAngle >= 45 && absoluteVerticalAngle <= 135) 
+            {
+                animationSideWalk = Mathf.Lerp(animationSideWalk, targetSpeed * Mathf.Sign(verticalAngle), speedChangeRate * Time.deltaTime);
+                animationBlend = Mathf.Lerp(animationBlend, 0, speedChangeRate * Time.deltaTime);
+            }
+            else if (absoluteVerticalAngle > 135 || absoluteVerticalAngle < 45) 
+            {
+                animationBlend = Mathf.Lerp(animationBlend, targetSpeed * -Mathf.Sign(horizontalAngle), speedChangeRate * Time.deltaTime);
+                animationSideWalk = Mathf.Lerp(animationSideWalk, 0, speedChangeRate * Time.deltaTime);
+            }
+            playerAnimator.SetFloat("Direction", animationSideWalk);
+        }
+        else
+        {
+            animationBlend = Mathf.Lerp(animationBlend, targetSpeed, speedChangeRate * Time.deltaTime);
+            if (animationBlend > 0 && animationBlend < 0.01f) animationBlend = 0f;
+        }
         playerAnimator.SetFloat("Move", animationBlend);
+    }
+
+    public void ExitAiming()
+    {
+        animationSideWalk = 0f;
+        playerAnimator.SetFloat("Direction", animationSideWalk);
+        if (animationBlend < 0)
+        {
+            animationBlend = -animationBlend;
+            playerAnimator.SetFloat("Move", animationBlend);
+        }
+    }
+
+    public bool IsSprint()
+    {
+        return input.sprint;
     }
 
     public void Turn()
@@ -123,7 +160,7 @@ public class PlayerControllerScr : MonoBehaviour
         }
     }
 
-    public void LookAtMouse()
+    public void Aiming()
     {
         Vector2 playerInScreen = cam.WorldToScreenPoint(transform.position + Vector3.up);
         Vector2 targetRotate = input.lookAtMouse - playerInScreen;
@@ -131,6 +168,11 @@ public class PlayerControllerScr : MonoBehaviour
         transform.forward = Vector3.Lerp(transform.forward, new Vector3(-targetRotate.y, 0f, targetRotate.x), 0.02f);
         
         // Необходимо пофиксить. Прицелиться в объект возможно только при наведение на его основание курсором
+    }
+
+    public bool IsAiming()
+    {
+        return input.aiming;
     }
 
     public void Gravity()

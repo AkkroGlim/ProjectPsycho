@@ -207,6 +207,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: Direction
+    m_Type: 1
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -360,26 +366,50 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 86eb4b0202e0aaf449625b0c6703f225, type: 2}
     m_Threshold: 2
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 0.7
+    m_Position: {x: 2, y: 0}
+    m_TimeScale: 0.8
     m_CycleOffset: 0
     m_DirectBlendParameter: Move
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 3c739ec731a8e18458e7b8f3cf7157e2, type: 2}
     m_Threshold: 6
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 0.7
+    m_Position: {x: 6, y: 0}
+    m_TimeScale: 0.8
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Move
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 10055bf9639b50441b91a742e62cde79, type: 2}
+    m_Threshold: 10
+    m_Position: {x: 0, y: 2}
+    m_TimeScale: 1
+    m_CycleOffset: 0
+    m_DirectBlendParameter: Move
+    m_Mirror: 0
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 10055bf9639b50441b91a742e62cde79, type: 2}
+    m_Threshold: 14
+    m_Position: {x: 0, y: -2}
+    m_TimeScale: 1
+    m_CycleOffset: 0.5
+    m_DirectBlendParameter: Move
+    m_Mirror: 1
+  - serializedVersion: 2
+    m_Motion: {fileID: 7400000, guid: 3e5026484fc6a1c4ba3d08f7fe070e74, type: 2}
+    m_Threshold: 18
+    m_Position: {x: -2, y: 0}
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Move
     m_Mirror: 0
   m_BlendParameter: Move
-  m_BlendParameterY: Move
+  m_BlendParameterY: Direction
   m_MinThreshold: 0
-  m_MaxThreshold: 6
+  m_MaxThreshold: 18
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
-  m_BlendType: 0
+  m_BlendType: 2
 --- !u!1102 &7622402729715735613
 AnimatorState:
   serializedVersion: 6

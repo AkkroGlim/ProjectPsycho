@@ -1,8 +1,7 @@
-
-public class DefaultState : State
+using UnityEngine;
+public class AimingState : State
 {
-    public DefaultState(PlayerControllerScr player, StateMachine stateMachine) : base(player, stateMachine) { }
-
+    public AimingState(PlayerControllerScr player, StateMachine stateMachine) : base(player, stateMachine) { }
 
     public override void Enter()
     {
@@ -12,14 +11,15 @@ public class DefaultState : State
     public override void Exit()
     {
         base.Exit();
+        player.ExitAiming();
     }
 
     public override void HandleInput()
     {
         base.HandleInput();
-        if (player.IsAiming() && !player.IsSprint())
+        if (!player.IsAiming() || player.IsSprint())
         {
-            stateMachine.ChangeState(player.aimingState);
+            stateMachine.ChangeState(player.defaultState);
         }
     }
 
@@ -28,13 +28,12 @@ public class DefaultState : State
         base.LogicUpdate();
         player.Gravity();
         player.Move();
-        player.Turn();
+        player.Aiming();
         player.actionWithWeapon?.Invoke();
-        
     }
 
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-    }  
+    }
 }
